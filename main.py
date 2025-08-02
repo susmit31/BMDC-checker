@@ -48,6 +48,8 @@ if post_resp.ok == True:
     print("Received BMDC info. Decoding - please wait...")
     soup2 = BeautifulSoup(zstd.decompress(post_resp.content), features="html.parser")
     doc_info = {label.text:value.text for (label, value) in list(zip(soup2.find_all("label"), soup2.find_all("h6")))}
+    for elem in soup2.find_all("h5"):
+        doc_info[elem.parent.small.text] = elem.text
     doc_info["name"] = soup2.find_all("h3")[-1].text
     print(f"Name: {doc_info['name']}")
     for key in doc_info:
